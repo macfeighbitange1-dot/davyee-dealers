@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davyee Dealers | Premium Secondhand Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Davyee <span>Dealers</span></div>
+        <div class="contact-top">📞 Call: 07XX XXX XXX</div>
+    </nav>
+
+    <header class="hero">
+        <h1>Premium Secondhand Items</h1>
+        <p>We Buy & Sell Urgently. Quality Guaranteed.</p>
+        
+        <div class="search-container">
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Search for screens, sofas, beds..." value="{{ request.args.get('search', '') }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <h2 class="section-title">
+                {% if request.args.get('search') %}
+                    Search Results for "{{ request.args.get('search') }}"
+                {% else %}
+                    Featured Inventory
+                {% endif %}
+            </h2>
+            {% if request.args.get('search') %}
+                <a href="/" class="back-link">← View All Items</a>
+            {% endif %}
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-img-container">
+                    <img src="{{ url_for('static', filename='images/' + product.image_file) }}" 
+                         alt="{{ product.name }}" 
+                         onerror="this.src='https://via.placeholder.com/300x200?text=No+Image+Found'">
+                </div>
+                
+                <div class="product-info">
+                    <span class="category">{{ product.category }}</span>
+                    <h3>{{ product.name }}</h3>
+                    <p class="description">{{ product.description }}</p>
+                    <p class="price">{{ product.price }}</p>
+                    
+                    <a href="https://wa.me/2547XXXXXXXX?text=I%20am%20interested%20in%20the%20{{ product.name }}" 
+                       class="buy-btn" target="_blank">
+                       Inquire via WhatsApp
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="no-results">
+                <p>No items found matching your search. Try searching for something else!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Davyee Dealers | Fast & Reliable Furniture Traders</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,243 @@
+/* Variables for consistency */
+:root {
+    --primary-gold: #f39c12;
+    --dark-bg: #1a1a1a;
+    --light-gray: #f9f9f9;
+    --white: #ffffff;
+    --text-dark: #333;
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    --whatsapp-green: #25d366;
+}
+
+body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    margin: 0; 
+    background: var(--light-gray); 
+    color: var(--text-dark); 
+    line-height: 1.6; 
+}
+
+/* Navigation Bar */
+.navbar {
+    background: var(--white);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--dark-bg);
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--primary-gold);
+}
+
+/* Hero Section */
+.hero { 
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white; 
+    text-align: center; 
+    padding: 6rem 1rem; 
+}
+
+.hero h1 { 
+    color: var(--primary-gold); 
+    font-size: 3rem;
+    margin: 0; 
+    text-transform: uppercase;
+}
+
+/* --- NEW: Search Bar Styling --- */
+.search-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    background: var(--white);
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.search-form input {
+    flex: 1;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.search-form button {
+    background: var(--primary-gold);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.search-form button:hover {
+    background: #e67e22;
+}
+
+/* Container & Grid */
+.container { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 2rem;
+    border-left: 5px solid var(--primary-gold);
+    padding-left: 15px;
+}
+
+.back-link {
+    color: var(--primary-gold);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Product Cards */
+.product-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 30px; 
+}
+
+.product-card { 
+    background: var(--white); 
+    border-radius: 12px; 
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* --- NEW: Image Container Fix --- */
+.product-img-container {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background-color: #eee;
+}
+
+.product-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-img-container img {
+    transform: scale(1.1);
+}
+
+.category-tag {
+    background: var(--primary-gold);
+    color: white;
+    font-size: 0.7rem;
+    padding: 5px 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: fit-content;
+    margin: 20px 20px 0;
+    border-radius: 20px;
+}
+
+.product-info {
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-card h3 { 
+    margin: 10px 20px;
+    font-size: 1.25rem;
+    color: var(--dark-bg);
+}
+
+.description {
+    padding: 0 20px;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.price {
+    padding: 0 20px 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* Buttons */
+.buy-btn { 
+    display: block; 
+    background: var(--whatsapp-green); 
+    color: var(--white); 
+    padding: 15px; 
+    margin: 0 20px;
+    text-align: center;
+    text-decoration: none; 
+    font-weight: bold;
+    border-radius: 8px;
+    transition: filter 0.3s;
+}
+
+.buy-btn:hover { 
+    filter: brightness(0.9);
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: #666;
+}
+
+footer { 
+    background: var(--dark-bg);
+    color: #888;
+    text-align: center; 
+    padding: 40px 20px; 
+    margin-top: 60px;
+}
