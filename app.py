@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
@@ -8,7 +9,9 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'davyee.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Ensure the upload folder exists
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'images')
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 db = SQLAlchemy(app)
 
@@ -41,6 +44,8 @@ with app.app_context():
         db.session.commit()
 
 # --- ROUTES ---
+
+# Home Page
 @app.route('/')
 def home():
     search_query = request.args.get('search')
@@ -51,8 +56,39 @@ def home():
         ).all()
     else:
         products = Product.query.all()
-    
     return render_template('index.html', products=products)
+
+# Admin Page: Add Product
+@app.route('/admin/add', methods=['GET', 'POST'])
+def add_product():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        category = request.form.get('category')
+        price = request.form.get('price')
+        description = request.form.get('description')
+        
+        file = request.files['image']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            filename = 'default.jpg'
+            
+        new_item = Product(name=name, category=category, price=price, 
+                          description=description, image_file=filename)
+        db.session.add(new_item)
+        db.session.commit()
+        return redirect(url_for('home'))
+            
+    return render_template('add_product.html')
+
+# Admin Page: Delete Product
+@app.route('/delete/<int:id>')
+def delete_product(id):
+    product = Product.query.get_or_404(id)
+    db.session.delete(product)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 # --- PORT FIX FOR RENDER ---
 if __name__ == '__main__':
