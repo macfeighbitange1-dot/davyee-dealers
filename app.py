@@ -9,9 +9,11 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'davyee.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Ensure the upload folder exists
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'images')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# --- SECURITY ---
+ADMIN_PASSWORD = "davyee123"  # Change this to your secret password!
 
 db = SQLAlchemy(app)
 
@@ -45,7 +47,6 @@ with app.app_context():
 
 # --- ROUTES ---
 
-# Home Page
 @app.route('/')
 def home():
     search_query = request.args.get('search')
@@ -58,10 +59,14 @@ def home():
         products = Product.query.all()
     return render_template('index.html', products=products)
 
-# Admin Page: Add Product
 @app.route('/admin/add', methods=['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
+        # --- PASSWORD CHECK ---
+        entered_password = request.form.get('password')
+        if entered_password != ADMIN_PASSWORD:
+            return "Unauthorized: Incorrect Password!", 403
+
         name = request.form.get('name')
         category = request.form.get('category')
         price = request.form.get('price')
@@ -82,15 +87,18 @@ def add_product():
             
     return render_template('add_product.html')
 
-# Admin Page: Delete Product
 @app.route('/delete/<int:id>')
 def delete_product(id):
+    # --- PASSWORD CHECK VIA URL ---
+    pass_check = request.args.get('password')
+    if pass_check != ADMIN_PASSWORD:
+        return "Unauthorized: You need the secret password to delete items.", 403
+
     product = Product.query.get_or_404(id)
     db.session.delete(product)
     db.session.commit()
     return redirect(url_for('home'))
 
-# --- PORT FIX FOR RENDER ---
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
