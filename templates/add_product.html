@@ -1,19 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin - Add Product</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Product | Davyee Dealers</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #d4af37;
+            outline: none;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d4af37;
+            font-weight: bold;
+        }
+        .pass-field {
+            border: 1px solid #d4af37;
+            background: #2a1f00; /* Subtle gold tint */
+        }
+    </style>
 </head>
-<body style="padding: 50px; background: #121212; color: white;">
-    <h2>Add New Item to Inventory</h2>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" placeholder="Product Name" required><br><br>
-        <input type="text" name="category" placeholder="Category (e.g. Kitchen)"><br><br>
-        <input type="text" name="price" placeholder="Price (e.g. KSh 5,000)"><br><br>
-        <textarea name="description" placeholder="Description"></textarea><br><br>
-        <label>Upload Product Image:</label><br>
-        <input type="file" name="image" required><br><br>
-        <button type="submit" class="buy-btn">Upload to Store</button>
-    </form>
+<body style="background: #121212; color: white; font-family: sans-serif;">
+
+    <div class="admin-form-container">
+        <h2 style="color: #d4af37; text-align: center; margin-bottom: 25px;">Add New Item</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <label>Product Details</label>
+            <input type="text" name="name" placeholder="Product Name (e.g. Samsung Microwave)" required>
+            <input type="text" name="category" placeholder="Category (e.g. Kitchen, Living Room)">
+            <input type="text" name="price" placeholder="Price (e.g. KSh 8,500)">
+            <textarea name="description" placeholder="Description of condition..."></textarea>
+            
+            <label>Upload Image</label>
+            <input type="file" name="image" required style="border: none; padding: 0;">
+            
+            <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+            
+            <label>Security</label>
+            <input type="password" name="password" class="pass-field" placeholder="Enter Secret Admin Password" required>
+            
+            <button type="submit" class="buy-btn" style="width: 100%; cursor: pointer; padding: 15px;">🚀 Post to Storefront</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/" style="color: #888; text-decoration: none; font-size: 0.9em;">← Cancel and Go Home</a>
+        </div>
+    </div>
+
 </body>
 </html>
