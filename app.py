@@ -8,7 +8,6 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'davyee.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Set the path for image uploads
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'images')
 
 db = SQLAlchemy(app)
@@ -34,7 +33,9 @@ with app.app_context():
             Product(name="6x6 King Size Bed", category="Bedroom", price="KSh 25,000", 
                     description="Hardwood frame", image_file="bed.jpg"),
             Product(name="Double Door Fridge", category="Kitchen", price="KSh 50,000", 
-                    description="Samsung, 300L", image_file="fridge.jpg")
+                    description="Samsung, 300L", image_file="fridge.jpg"),
+            Product(name="Gas Cylinder", category="Kitchen", price="KSh 4,500", 
+                    description="13kg Full with Burner", image_file="gas.jpg")
         ]
         db.session.bulk_save_objects(sample_items)
         db.session.commit()
@@ -42,10 +43,8 @@ with app.app_context():
 # --- ROUTES ---
 @app.route('/')
 def home():
-    # Search Logic: Look for 'search' keyword in the URL
     search_query = request.args.get('search')
     if search_query:
-        # Filter products by name or category based on search
         products = Product.query.filter(
             (Product.name.contains(search_query)) | 
             (Product.category.contains(search_query))
@@ -55,5 +54,7 @@ def home():
     
     return render_template('index.html', products=products)
 
+# --- PORT FIX FOR RENDER ---
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
